@@ -182,7 +182,6 @@ of customers for them to give stickers to, sorted by last name, then first name.
 HINT: This query requires you to join two tables, use an aggregate function, and use the HAVING keyword. */
 
 -- grouped based on the customer id 
-Select * from customer_purchases
 SELECT c.customer_id
 ,(customer_first_name ||' '|| customer_last_name) as customer_name
 ,SUM(quantity * cost_to_customer_per_qty) as money_spent
