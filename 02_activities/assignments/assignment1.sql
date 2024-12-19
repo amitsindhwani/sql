@@ -237,6 +237,8 @@ but remember, STRFTIME returns a STRING for your WHERE statement!! */
 -- To show customer names, we can join with the customer table, but we are pulling customer details who have purchased something
 SELECT customer_id
 ,sum(quantity*cost_to_customer_per_qty) as money_spent
+,strftime("%m", market_date) as purchase_month
+,strftime("%Y", market_date) as purchase_year
 FROM customer_purchases
 WHERE strftime("%m", market_date) = '04'
 AND strftime("%Y", market_date) = '2022'
