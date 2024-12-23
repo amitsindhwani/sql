@@ -49,7 +49,6 @@ SELECT customer_id
 ,DENSE_RANK() OVER (PARTITION by customer_id ORDER BY market_date) as customer_visit
 FROM customer_purchases
 
-
 /* 2. Reverse the numbering of the query from a part so each customer’s most recent visit is labeled 1, 
 then write another query that uses this one as a subquery (or temp table) and filters the results to 
 only the customer’s most recent visit. */
@@ -61,7 +60,6 @@ FROM (
 	FROM customer_purchases
 ) as customer_recent_visits
 WHERE customer_recent_visits.customer_visit = 1
-
 
 
 /* 3. Using a COUNT() window function, include a value along with each row of the 
