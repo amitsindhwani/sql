@@ -198,8 +198,7 @@ VALUES (24, 'Farm Fresh Strawberries', 'pint',1,'unit',CURRENT_TIMESTAMP)
 /* 1. Delete the older record for the whatever product you added. 
 
 HINT: If you don't specify a WHERE clause, you are going to have a bad time.*/
-DELETE FROM product_units
-WHERE product_id = 24
+
 DELETE FROM product_units
 WHERE product_id = 24
 AND snapshot_timestamp = (
@@ -230,13 +229,13 @@ ADD current_quantity INT
 
 UPDATE product_units
 SET current_quantity = COALESCE(( 
-	-- Apply COALESCE to the subquery to 0 is explicitly assigned for product ids without 
+	-- Apply COALESCE to the subquery to ensure 0 is explicitly assigned for product ids without 
 	-- a match in the vendor_inventory table.
     SELECT vi.quantity
     FROM vendor_inventory AS vi
     LEFT JOIN (
-        -- select the maximum market_date that will have the last quantity and self join to return only one column
-		-- to update the current quantity in the product_table
+        -- select the maximum market_date that will have the last quantity and the left join
+		-- the left join to return only one column to update the current quantity in the product_table
         SELECT product_id, MAX(market_date) AS last_market_date
         FROM vendor_inventory
         GROUP BY product_id
