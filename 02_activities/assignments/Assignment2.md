@@ -45,8 +45,21 @@ There are several tools online you can use, I'd recommend [Draw.io](https://www.
 
 **HINT:** You do not need to create any data for this prompt. This is a conceptual model only. 
 
+Logical model for prompt one is in folder sql\02_activities\assignments\images\assignment-two-bookstore-logical-model - prompt1.png
+
+Different entitites(tables) created include
+    Employee Table: Contains employees details, they manage customer orders and sales.
+    Customer Table: Contains customer details, Customers place orders that include one or more books.
+    Book Table: Contains details of available books.
+    Order Table: Tracks customer orders, an order may contain one or more books and quantities for each book.
+    Sales Table: Tracks payment for orders stores in order table.
+    Date Table: Provides a date dimension linked to employee hire date, order date and sale date.
+
 #### Prompt 2
 We want to create employee shifts, splitting up the day into morning and evening. Add this to the ERD.
+
+Logical model for prompt one is in folder sql\02_activities\assignments\images\assignment-two-bookstore-logical-model - prompt2.png
+
 
 #### Prompt 3
 The store wants to keep customer addresses. Propose two architectures for the CUSTOMER_ADDRESS table, one that will retain changes, and another that will overwrite. Which is type 1, which is type 2? 
@@ -54,7 +67,12 @@ The store wants to keep customer addresses. Propose two architectures for the CU
 **HINT:** search type 1 vs type 2 slowly changing dimensions. 
 
 ```
-Your answer...
+Type 1: Overwrites address (only one address for each customer) 
+    Logical model for prompt three - type 1 is in folder sql\02_activities\assignments\images\assignment-two-bookstore-logical-model-prompt 3-type1.png
+
+Type 2: Retains previous address (adds new address for changes)
+    Logical model for prompt three - type 2 is in folder sql\02_activities\assignments\images\assignment-two-bookstore-logical-model-prompt 3-type2.png
+
 ```
 
 ***
