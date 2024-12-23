@@ -200,7 +200,13 @@ VALUES (24, 'Farm Fresh Strawberries', 'pint',1,'unit',CURRENT_TIMESTAMP)
 HINT: If you don't specify a WHERE clause, you are going to have a bad time.*/
 DELETE FROM product_units
 WHERE product_id = 24
-
+DELETE FROM product_units
+WHERE product_id = 24
+AND snapshot_timestamp = (
+      SELECT MIN(snapshot_timestamp)
+      FROM product_units
+      WHERE product_id = 24
+)
 
 -- UPDATE
 /* 1.We want to add the current_quantity to the product_units table. 
@@ -223,19 +229,20 @@ ALTER TABLE product_units
 ADD current_quantity INT
 
 UPDATE product_units
-SET current_quantity = (
-	SELECT COALESCE (vi.quantity, 0) as last_quantity
-	FROM vendor_inventory as vi
-	JOIN (
-		-- select the maximum market_date that will have the last quantity and self join to return only one column
+SET current_quantity = COALESCE(( 
+	-- Apply COALESCE to the subquery to 0 is explicitly assigned for product ids without 
+	-- a match in the vendor_inventory table.
+    SELECT vi.quantity
+    FROM vendor_inventory AS vi
+    LEFT JOIN (
+        -- select the maximum market_date that will have the last quantity and self join to return only one column
 		-- to update the current quantity in the product_table
-		SELECT product_id, max(market_date) as last_market_date 
-		FROM vendor_inventory
-		GROUP by product_id
-		) as last_quantity_table
-	ON vi.product_id= last_quantity_table.product_id 
-	AND vi.market_date = last_quantity_table.last_market_date
-	WHERE product_units.product_id = vi.product_id
-)
-
+        SELECT product_id, MAX(market_date) AS last_market_date
+        FROM vendor_inventory
+        GROUP BY product_id
+    ) AS last_quantity_table
+    ON vi.product_id = last_quantity_table.product_id
+    AND vi.market_date = last_quantity_table.last_market_date
+    WHERE product_units.product_id = vi.product_id
+), 0);
 
